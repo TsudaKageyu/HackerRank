@@ -1,3 +1,5 @@
+// https://www.hackerrank.com/challenges/bonetrousle
+
 #include <iostream>
 
 using namespace std;
@@ -11,49 +13,35 @@ int main() {
         cin >> n >> k >> b;
         
         long long p[b];
-        long long sum = 0;
-        for (int i = 0; i < b; ++i) {
+        for (int i = 0; i < b; ++i) 
             p[i] = i + 1;
-            sum += i + 1;
-        }
         
-        if (sum > n) {
-            cout << -1 << endl;
-        }
-        else {
-            long long i;
-            for (i = b - 1; i >= 0; --i) {
+        long long sum = b * (b + 1) / 2;
+        
+        if (sum < n) {
+            for (long long i = b - 1; i >= 0; --i) {
                 if (sum == n)
                     break;
                 
-                const long long l = i + 2;
-                const long long r = i + (k - b) + 1;
-                const long long next = n - sum + p[i];
+                const long long r = min(n - sum + p[i], i + (k - b) + 1);
                 sum -= p[i];
-                if (l <= next && next <= r) {
-                    p[i] = next;
-                    sum += next;
-                    break;
-                }
-                else {
-                    p[i] = r;
-                    sum += r;
-                }
+                p[i] = r;
+                sum += p[i];
             }    
+        }
         
-            if (sum < n) {
-                cout << -1 << endl; 
+        if (sum == n) {
+            for (int i = 0; i < b; ++i) {
+                cout << p[i];
+
+                if (i < b - 1)
+                    cout << " ";
+                else
+                    cout << endl;
             }
-            else {
-                for (int i = 0; i < b; ++i) {
-                    cout << p[i];
-                    
-                    if (i < b - 1)
-                        cout << " ";
-                    else
-                        cout << endl;
-                }
-            }
+        }
+        else {
+            cout << -1 << endl; 
         }
     }
     
